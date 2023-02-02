@@ -55,50 +55,47 @@ var convert = function (s, numRows) {
   let converted = ''
   if (s.length <= numRows || numRows === 1) return s
   if (numRows === 2) {
-    for (let i = 0; i < s.length; i++) if (i % 2 === 0) converted += s[i]
-    for (let i = 0; i < s.length; i++) if (i % 2 === 1) converted += s[i]
+    let odd = ''
+    let even = ''
+    for (let i = 0; i < s.length; i++) {
+      if (i % 2 === 0) even += s[i]
+      else odd += s[i]
+    }
+    return even + odd
   } else
     for (let i = 0; i < numRows; i++) {
       let result = []
       result.push(i)
-      if (numRows % 2 === 1) {
-        for (let j = 1; j <= numRows; j++) {
-          let a = 2 * (numRows - 1) * j - i
-          let b = 2 * (numRows - 1) * j + i
-          if (!result.includes(a) && a < s.length) result.push(a)
-          if (!result.includes(b) && b < s.length) result.push(b)
-        }
-        for (let index = 0; index < result.length; index++) converted = converted += s[result[index]]
-        result = []
-      } else {
-        for (let j = 1; j <= numRows - 1; j++) {
-          let a = 2 * (numRows - 1) * j - i
-          let b = 2 * (numRows - 1) * j + i
-          if (!result.includes(a) && a < s.length) result.push(a)
-          if (!result.includes(b) && b < s.length) result.push(b)
-        }
-        for (let index = 0; index < result.length; index++) converted = converted += s[result[index]]
-        result = []
+      for (let j = 1; j <= (s.length + numRows + 1) / (2 * (numRows - 1)); j++) {
+        let a = 2 * (numRows - 1) * j - i
+        let b = 2 * (numRows - 1) * j + i
+        if (!result.includes(a) && a < s.length) result.push(a)
+        if (!result.includes(b) && b < s.length) result.push(b)
       }
+      for (let index = 0; index < result.length; index++) converted = converted += s[result[index]]
+      result = []
     }
   return converted
 }
+/*
+00 -- 04 -- 08 -- 12 -- 16 -- 20 -- 24 -- 28 -- 32 -- 36 -- 40 -- 44 -- 48
+01 03 05 07 09 11 13 15 17 19 21 23 25 27 29 31 33 35 37 39 41 43 45 47 49
+02 -- 06 -- 10 -- 14 -- 18 -- 22 -- 26 -- 30 -- 34 -- 38 -- 42 -- 46 -- 50
+A - i - o - s - r - h - e - m - , - t - s - e - o 
+p l n r m i a o d p r s , u b r o o h r e u n e f
+a - d - e - w - , - a - n - e - r - e - q - c - 
+*/
 /*
 ACE
 BD
 024
 13
 
-PYAIHRN
-APLSIIG
-0 2 4 6 8 10 12
-1 3 5 7 9 11 13
 */
-let s = 'PAYPALISHIRING'
-let numRows = 2
-console.log(convert(s, numRows))
+let s = 'Apalindromeisaword,phrase,number,orothersequenceofunitsthatcanbereadthesamewayineitherdirection,withgeneralallowancesforadjustmentstopunctuationandworddividers.'
 
-let result = []
+let numRows = 4
+console.log(convert(s, numRows))
 
 //Line0
 // 00 -- -- -- 08 -- -- -- 16 -- -- -- 24 -- -- -- 32
